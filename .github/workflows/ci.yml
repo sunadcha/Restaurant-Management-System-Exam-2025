@@ -1,29 +1,26 @@
-steps:
-      - uses: actions/checkout@v4
+# ... (ด้านบนคงเดิมจนถึงขั้นตอนรัน Frontend Build)
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
+    - name: Prepare Database Schema
+      run: cd backend && npx prisma db push
+      env:
+        DATABASE_URL: postgresql://postgres:postgres@localhost:5432/rms_test
 
-      - name: Install dependencies
-        run: npm install
+    - name: Start Backend Server
+      run: |
+        cd backend
+        npm run build
+        npm start & 
+      env:
+        DATABASE_URL: postgresql://postgres:postgres@localhost:5432/rms_test
+        PORT: 3001
 
-      - name: Prepare Database and Build
-        run: |
-          echo "DATABASE_URL=file:./dev.db" > .env
-          npx prisma generate
-          npx prisma db push
-          npm run build
+    - name: Wait for API to be ready
+      run: npx wait-on http://localhost:3001 --timeout 60000
 
-      - name: Start Backend
-        run: npm start & 
-
-      - name: Wait for Server
-        run: npx wait-on http://localhost:3001 --timeout 120000
-
-      - name: Run Newman API Tests
-        run: |
-          newman run ../tests/postman/RMS-68030298-TestSuite-v2.json \
-          -e ../tests/postman/env-ci.json \
-          --reporters cli
+    - name: Run Newman API Tests
+      run: |
+        npm install -g newman
+        newman run tests/postman/RMS-68030298-TestSuite-v2.json \
+        -e tests/postman/env-ci.json \
+        --reporters cli
+      # แนะนำให้เอา || true ออก เพื่อให้มันแดงจริงๆ ถ้าเทสไม่ผ่าน
