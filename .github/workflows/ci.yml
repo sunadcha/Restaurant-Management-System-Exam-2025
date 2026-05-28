@@ -1,26 +1,68 @@
-# ... (ด้านบนคงเดิมจนถึงขั้นตอนรัน Frontend Build)
+name: CI
 
-    - name: Prepare Database Schema
-      run: cd backend && npx prisma db push
-      env:
-        DATABASE_URL: postgresql://postgres:postgres@localhost:5432/rms_test
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
 
-    - name: Start Backend Server
-      run: |
-        cd backend
-        npm run build
-        npm start & 
-      env:
-        DATABASE_URL: postgresql://postgres:postgres@localhost:5432/rms_test
-        PORT: 3001
+jobs:
+  test:
+    runs-on: ubuntu-latest
 
-    - name: Wait for API to be ready
-      run: npx wait-on http://localhost:3001 --timeout 60000
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: rms_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
-    - name: Run Newman API Tests
-      run: |
-        npm install -g newman
-        newman run tests/postman/RMS-68030298-TestSuite-v2.json \
-        -e tests/postman/env-ci.json \
-        --reporters cli
-      # แนะนำให้เอา || true ออก เพื่อให้มันแดงจริงๆ ถ้าเทสไม่ผ่าน
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: 'backend/package-lock.json'
+
+      - name: Install dependencies
+        run: |
+          cd backend && npm ci
+          cd ../frontend && npm ci
+
+      - name: Build and Prepare Database
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/rms_test
+        run: |
+          cd backend
+          npx prisma generate
+          npx prisma db push
+          npm run build
+
+      - name: Start Backend Server
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/rms_test
+          PORT: 3001
+        run: |
+          cd backend
+          npm start &
+
+      - name: Wait for API
+        run: npx wait-on http://localhost:3001 --timeout 60000
+
+      - name: Run Newman API Tests
+        run: |
+          npm install -g newman
+          newman run tests/postman/RMS-68030298-TestSuite-v2.json \
+          -e tests/postman/env-ci.json \
+          --reporters cli
