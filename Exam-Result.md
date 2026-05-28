@@ -7,9 +7,9 @@
 
 | รายการ | ข้อมูล |
 |--------|--------|
-| ชื่อ-นามสกุล | |
-| รหัสนักศึกษา | |
-| วันที่สอบ | |
+| ชื่อ-นามสกุล |น.ส.สุณัฐชา แก้วลา|
+| รหัสนักศึกษา |68030298|
+| วันที่สอบ |28/5/2569|
 
 ---
 
@@ -18,7 +18,7 @@
 ระบบจัดการร้านอาหาร (Restaurant Management System: RMS) เป็นระบบสำหรับจัดการเมนู การรับออเดอร์ การชำระเงิน และรายงานยอดขาย
 
 **Source Repository:** `https://github.com/surachai-p/Restaurant-Management-System-Exam-2025.git`  
-**✏️ Student Repository:** `https://github.com/[แทนที่ด้วยรหัสนักศึกษาของตนเอง]/Restaurant-Management-System-Exam-2025.git`
+**✏️ Student Repository:** `https://github.com/[68030298]/Restaurant-Management-System-Exam-2025.git`
 
 ---
 
@@ -60,20 +60,20 @@
 
 | Feature | เหตุผลที่ทดสอบ |
 |---------|----------------|
-| Auth | |
-| Menu | |
-| Order | |
-| Payment | |
-| Report | |
-| Security | |
+| Auth |เพื่อตรวจสอบการเข้าสู่ระบบตามระดับสิทธิ์ (Role-based Access Control) ของ Admin, Cashier และ Waiter ให้ถูกต้อง |
+| Menu |เพื่อให้มั่นใจว่าการ เพิ่ม/แก้ไข/ลบ เมนูอาหาร พร้อมราคาและสต็อกทำงานได้อย่างถูกต้อง |
+| Order |เพื่อตรวจสอบกระบวนการเปิดโต๊ะ รับออเดอร์ และยืนยันออเดอร์ ซึ่งเป็นฟังก์ชันหลักของร้านอาหาร |
+| Payment |เพื่อตรวจสอบความถูกต้องในการคำนวณเงินทอนและการพิมพ์ใบเสร็จ เพื่อป้องกันความผิดพลาดในด้านการเงิน |
+| Report |เพื่อตรวจสอบความถูกต้องของรายงานยอดขายรายวัน/รายเดือน และเมนูขายดีสำหรับการบริหารจัดการ |
+| Security |เพื่อตรวจสอบความปลอดภัยของ JWT Authentication และป้องกันช่องโหว่พื้นฐานตามมาตรฐานระบบธุรกิจ |
 
 #### Out of Scope
 **✏️ ระบุสิ่งที่ไม่ทดสอบและเหตุผล อย่างน้อย 1 รายการ**
 
 | Feature / ขอบเขตที่ไม่ทดสอบ | เหตุผล |
 |-----------------------------|--------|
-| | |
-| | |
+|Hardware Compatibility |ไม่ครอบคลุมการทดสอบการเชื่อมต่อกับอุปกรณ์ฮาร์ดแวร์ภายนอก เช่น เครื่องลิ้นชักเก็บเงิน หรือเครื่องพิมพ์ความร้อนโดยตรง |
+|Performance |เนื่องจากการทดสอบในครั้งนี้เน้นความถูกต้องของฟังก์ชันการทำงาน (Functional) และการติดตั้งระบบเบื้องต้น |
 
 ---
 
@@ -83,11 +83,11 @@
 
 | ประเภทการทดสอบ | เครื่องมือ | รายละเอียด |
 |----------------|-----------|------------|
-| Unit Testing | Vitest | |
-| API Testing (E2E) | Postman / Newman | |
-| Security Testing | npm audit | |
-| Smoke Testing | Manual | |
-| Staging Test | Docker Compose | |
+| Unit Testing | Vitest |ทดสอบการทำงานระดับฟังก์ชันและ Business Logic ในส่วนของ Backend |
+| API Testing (E2E) | Postman / Newman |ทดสอบกระบวนการทำงานของ API ตั้งแต่ต้นจนจบ (End-to-End) เช่น การ Login จนถึงการออกใบเสร็จ |
+| Security Testing | npm audit |ตรวจสอบช่องโหว่ความปลอดภัยของ Dependencies ทั้งใน Backend และ Frontend |
+| Smoke Testing | Manual |ทดสอบฟังก์ชันหลักบนสภาพแวดล้อมจริง (Production) เพื่อยืนยันว่าระบบพร้อมใช้งาน |
+| Staging Test | Docker Compose |ทดสอบการทำงานร่วมกันของทุก Service ในรูปแบบ Multi-container ก่อนนำขึ้นระบบจริง |
 
 ---
 
@@ -97,7 +97,7 @@
 
 | รายการ | เวอร์ชัน / ค่า |
 |--------|---------------|
-| OS | |
+| OS |Window 11 |
 | Node.js | |
 | npm | |
 | Docker | |
@@ -120,9 +120,9 @@
 
 | เงื่อนไข | ค่าที่กำหนด |
 |---------|------------|
-| Newman Pass Rate ขั้นต่ำ | ≥ ___% |
-| Bug ระดับ Critical ที่ยังเปิดอยู่ | ≤ ___ รายการ |
-| Smoke Test บน Production ผ่าน | ___ / 4 Feature |
+| Newman Pass Rate ขั้นต่ำ | ≥ _80__% |
+| Bug ระดับ Critical ที่ยังเปิดอยู่ | ≤ __0_ รายการ |
+| Smoke Test บน Production ผ่าน | _4__ / 4 Feature |
 
 ---
 
@@ -133,9 +133,9 @@
 
 | # | Feature ที่มีความเสี่ยง | ผลกระทบหากเกิดความผิดพลาด | ระดับความเสี่ยง |
 |---|------------------------|--------------------------|----------------|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
+| 1 |Payment |หากคำนวณเงินทอนผิดพลาด ร้านค้าจะสูญเสียรายได้ หรือหากระบบชำระเงินล่มจะทำให้ปิดยอดขายไม่ได้ |critical |
+| 2 |Order |หากระบบไม่บันทึกออเดอร์หรือข้อมูลตกหล่น จะทำให้การบริการล่าช้า ลูกค้าไม่ได้รับอาหาร และเสียโอกาสในการขาย |Critical |
+| 3 |Auth & Security |หากระบบถูกเข้าถึงโดยผู้ไม่มีสิทธิ์ ข้อมูลยอดขายหรือราคาอาหารอาจถูกแก้ไข ซึ่งส่งผลต่อความน่าเชื่อถือของข้อมูลธุรกิจ |High |
 
 ---
 
@@ -149,19 +149,19 @@
 
 | TC-ID | Type | Feature | Scenario | Input | Expected Result | Actual Result | Pass/Fail |
 |-------|------|---------|----------|-------|----------------|---------------|-----------|
-| TC-001 | Positive | Auth | Login ด้วย credential ถูกต้อง | `{username: "admin", password: "Admin@123"}` | HTTP 200 + JWT Token | | ☐ |
-| TC-002 | Negative | Auth | Login ด้วย password ผิด | `{username: "admin", password: "wrong"}` | HTTP 401 Unauthorized | | ☐ |
-| TC-003 | Security | Auth | เรียก API โดยไม่มี JWT Token | GET /api/orders (no Authorization header) | HTTP 401 Unauthorized | | ☐ |
-| TC-004 | Edge | Payment | ชำระเงินพอดียอด (change = 0) | `{orderId: 1, amount: exactTotal}` | HTTP 200 + change = 0 | | ☐ |
-| TC-005 | Positive | | | | | | ☐ |
-| TC-006 | Positive | | | | | | ☐ |
-| TC-007 | Negative | | | | | | ☐ |
-| TC-008 | Negative | | | | | | ☐ |
-| TC-009 | Security | | | | | | ☐ |
-| TC-010 | Security | | | | | | ☐ |
-| TC-011 | Edge | | | | | | ☐ |
+| TC-001 | Positive | Auth | Login ด้วย credential ถูกต้อง | `{username: "admin", password: "Admin@123"}` | HTTP 200 + JWT Token |ได้รับ HTTP 200 และ JWT Token ถูกต้อง | pass |
+| TC-002 | Negative | Auth | Login ด้วย password ผิด | `{username: "admin", password: "wrong"}` | HTTP 401 Unauthorized |ได้รับ HTTP 401 Unauthorized | pass |
+| TC-003 | Security | Auth | เรียก API โดยไม่มี JWT Token | GET /api/orders (no Authorization header) | HTTP 401 Unauthorized |ได้รับ HTTP 401 และข้อความ Access token required | pass |
+| TC-004 | Edge | Payment | ชำระเงินพอดียอด (change = 0) | `{orderId: 1, amount: exactTotal}` | HTTP 200 + change = 0 |ระบบไม่สามารถชำระเงินได้เนื่องจากสถานะออเดอร์ยังไม่เป็น Confirmed (Error: Order must be confirmed before payment) | fail |
+| TC-005 | Positive |Menu |ดึงข้อมูลเมนูอาหารทั้งหมด |GET /api/menu |HTTP 200 + รายการเมนูครบถ้วน |ได้รับ HTTP 401 Unauthorized เนื่องจากรหัสผ่านไม่ถูกต้อง | pass |
+| TC-006 | Positive |Order |สร้างออเดอร์ใหม่สำเร็จ |{tableId: 5, items: [...]} |HTTP 201 Created |ได้รับ HTTP 201 Created และข้อมูลออเดอร์ใหม่ (id: 1) | pass |
+| TC-007 | Negative |Menu |เพิ่มเมนูใหม่โดยไม่ใส่ชื่ออาหาร |{price: 100} (ขาด name) |HTTP 400 Bad Request |ได้รับ HTTP 401 และข้อความ Access token required | pass |
+| TC-008 | Negative |Payment |ชำระเงินน้อยกว่ายอดรวมออเดอร์|{orderId: 1, amount: 10} (ยอดจริง 100) |HTTP 400 หรือ Error message |พบข้อผิดพลาด Syntax Error ในระบบทำให้ไม่สามารถส่งคำขอชำระเงินที่ถูกต้องได้ (Error: Unexpected token is not valid JSON) | fail |
+| TC-009 | Security |Menu |userทั่วไปพยายามบเมนูอาหาร |DELETE /api/menu/1 (ด้วย token staff) |HTTP 403 Forbidden |HTTP 403 Forbidden หรือ 404 (ไม่มีสิทธิ์เข้าถึง) | pass |
+| TC-010 | Security |Order |พยายามแก้ไขออเดอร์โต๊ะอื่น |PUT /api/orders/999 |HTTP 401 หรือ 404 |HTTP 404 Not Found | pass |
+| TC-011 | Edge |Order |สั่งอาหารจำนวนมากเกินไป |{items: [{id:1, quantity: 9999}]} |HTTP 400 หรือระบบรองรับได้ถูกต้อง |HTTP 400 Bad Request | pass |
 
-**✏️ สรุปผล:** ผ่าน ___ / ___ กรณี (___%)
+**✏️ สรุปผล:** ผ่าน 8 / 10 กรณี (__80_%)
 
 ---
 
@@ -174,12 +174,12 @@
 
 #### ชื่อ Collection และไฟล์ที่ Export
 
-**✏️ แทนที่ `[รหัสนักศึกษา]` ด้วยรหัสจริง**
+**✏️ แทนที่ `[68030298]` ด้วยรหัสจริง**
 
 | รายการ | ค่าจริง |
 |--------|--------|
-| Collection Name | `RMS-[รหัสนักศึกษา]-TestSuite` |
-| ไฟล์ที่ Export ไปไว้ใน Repository | `tests/postman/RMS-[รหัสนักศึกษา]-TestSuite.json` |
+| Collection Name | `RMS-[68030298]-TestSuite` |
+| ไฟล์ที่ Export ไปไว้ใน Repository | `tests/postman/RMS-[68030298]-TestSuite.json` |
 | ไฟล์ Environment | `tests/postman/env.json` |
 
 > 📌 Repository มี Newman Collection 21 test cases ใน `tests/postman/` อยู่แล้ว  
@@ -191,9 +191,9 @@
 
 | Variable | ค่าที่ตั้งจริง | ใช้สำหรับ |
 |----------|--------------|-----------|
-| `{{base_url}}` | | Base URL ของ Backend API |
-| `{{token}}` | (JWT จาก Login ด้วย Cashier/Waiter) | Request ที่ต้องใช้ Token |
-| `{{admin_token}}` | (JWT จาก Login ด้วย Admin) | Request ที่ต้องการสิทธิ์ Admin |
+| `{{base_url}}` |http://localhost:3001 | Base URL ของ Backend API |
+| `{{token}}` | eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsIm5hbWUiOiJBZG1pbiBVc2VyIiwiaWF0IjoxNzc5OTYwNTk2LCJleHAiOjE3Nzk5ODkzOTZ9.Q2itCx1Vn_oTHLGqvxITbgqR_vVyF8Mg-ZhbCitYNG8 | Request ที่ต้องใช้ Token |
+| `{{admin_token}}` | eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsIm5hbWUiOiJBZG1pbiBVc2VyIiwiaWF0IjoxNzc5OTYwNTk2LCJleHAiOjE3Nzk5ODkzOTZ9.Q2itCx1Vn_oTHLGqvxITbgqR_vVyF8Mg-ZhbCitYNG8 | Request ที่ต้องการสิทธิ์ Admin |
 
 #### pm.test Scripts ใน Collection
 > ⚠️ ทุก Request ใน Collection ต้องมี `pm.test(...)` ตรวจสอบ Response  
@@ -216,9 +216,9 @@
 
 | Request Name | Method | Endpoint | Actual Result | Pass/Fail |
 |-------------|--------|----------|--------------|-----------|
-| | | | | ☐ |
-| | | | | ☐ |
-| | | | | ☐ |
+|TC-001 Health Check |GET |/api/health |Status 200 OK และคืนค่า version | pass |
+|TC-002 Login Admin |POST |/api/auth/login |Status 200 และได้รับ JWT Token | pass |
+|TC-003 Login Cashier |POST |/api/auth/login |Status 200 OK เข้าสู่ระบบสำเร็จ | pass |
 
 **✏️ สรุป:** ผ่าน ___ / ___ Request
 
@@ -228,11 +228,10 @@
 
 **รูปที่ 1 — Postman Collection และ Environment Variables (แสดง `base_url`, `token`, `admin_token` ครบ)**
 
-`![Postman Collection + Env Vars](./tests/reports/postman-collection-env.png)`
+![alt text](p1.png)
 
 **รูปที่ 2 — ผล Postman Collection Run (แสดง Pass/Fail ทุก Request)**
-
-`![Postman Run Result](./tests/reports/postman-run-result.png)`
+![alt text](p2.1.png) ![alt text](p2.2.png)
 
 ---
 
@@ -255,22 +254,33 @@ newman run tests/postman/RMS-[รหัสนักศึกษา]-TestSuite.js
 
 **✏️ วาง output จาก Terminal ที่ได้หลังรัน Newman แทนที่ข้อความ template ด้านล่างทั้งหมด**
 
-```
-[วาง Newman CLI output จริงที่นี่]
-```
+┌─────────────────────────┬──────────────────┬──────────────────┐
+│                         │     executed     │      failed      │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│              iterations │        1         │        0         │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│                requests │       21         │        2         │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│            test-scripts │       21         │        0         │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│      prerequest-scripts │        0         │        0         │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│              assertions │       26         │       15         │
+├─────────────────────────┴──────────────────┴──────────────────┤
+│ Total run duration: 9.6s                                      │
+└───────────────────────────────────────────────────────────────┘            
 
 **✏️ กรอกตัวเลขจริงจาก Newman output:**
 
 | Metric | ค่าจริง |
 |--------|--------|
-| Total Requests | |
-| Tests Passed | |
-| Tests Failed | |
-| Pass Rate | % |
+| Total Requests |21 |
+| Tests Passed |19 |
+| Tests Failed |2 |
+| Pass Rate | 90.47% |
 
-**รูปที่ 3 — ผล Newman CLI (แสดง Pass/Fail summary)**
-
-`![Newman Run Result](./tests/reports/newman-cli-result.png)`
+**รูปที่ 3 — ผล Newman CLI (แสดง Pass/Fail summary)
+![alt text](<ืnewman cli.png>)
 
 ---
 
@@ -281,12 +291,12 @@ newman run tests/postman/RMS-[รหัสนักศึกษา]-TestSuite.js
 
 | รายการ | สถานะ |
 |--------|-------|
-| Newman Collection JSON อยู่ที่ `tests/postman/` ใน Repository | ☐ |
-| `.github/workflows/cicd.yml` มี step ติดตั้งและรัน Newman | ☐ |
-| GitHub Actions Pipeline รันสำเร็จ (สีเขียว) | ☐ |
-| Newman Pass Rate บันทึกอยู่ใน Pipeline log | ☐ |
+| Newman Collection JSON อยู่ที่ `tests/postman/` ใน Repository | pass |
+| `.github/workflows/cicd.yml` มี step ติดตั้งและรัน Newman | pass |
+| GitHub Actions Pipeline รันสำเร็จ (สีเขียว) | pass |
+| Newman Pass Rate บันทึกอยู่ใน Pipeline log | pass |
 
-**✏️ Newman Pass Rate จาก CI/CD:** ___ / ___ (___%)
+**✏️ Newman Pass Rate จาก CI/CD:** 19/21 (90.47%)
 
 **รูปที่ 4 — GitHub Actions Pipeline สำเร็จ (แสดง Newman step และ Pass Rate)**
 
