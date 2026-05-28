@@ -1,17 +1,36 @@
-- name: Install dependencies
-      run: npm install  # ติดตั้ง Library ที่จำเป็นรวมถึง wait-on (ถ้ามีใน package.json)
+name: CI
+on:
+  push:
+    branches: [ main, master ]
 
-    - name: Start Backend Server
-      # รัน Server เป็น background process
-      run: npm start & 
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-    - name: Wait for Server to be ready
-      # สำคัญมาก: รอจนกว่า port 3001 จะตอบรับจริง ๆ ถึงจะเริ่มเทส
-      run: npx wait-on http://localhost:3001 --timeout 60000
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
 
-    - name: Run Newman API Tests
-      # ลบ continue-on-error ออกแล้ว
-      run: |
-        newman run tests/postman/RMS-68030298-TestSuite-v2.json \
-        -e tests/postman/env-ci.json \
-        --reporters cli
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Newman
+        run: npm install -g newman
+
+      - name: Start Backend Server
+        # ใช้ & เพื่อให้รันเป็น background และทำ step ต่อไปได้ทันที
+        run: npm start &
+
+      - name: Wait for Server
+        # ป้องกัน ECONNREFUSED โดยการรอให้ Server ตื่นจริงๆ ก่อน
+        run: npx wait-on http://localhost:3001 --timeout 60000
+
+      - name: Run Newman API Tests
+        # ไม่มี continue-on-error แล้ว เพื่อให้รายงานผลตามจริง
+        run: |
+          newman run tests/postman/RMS-68030298-TestSuite-v2.json \
+          -e tests/postman/env-ci.json \
+          --reporters cli
