@@ -35,12 +35,12 @@ jobs:
           cache: 'npm'
           cache-dependency-path: 'backend/package-lock.json'
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: |
           cd backend && npm ci
           cd ../frontend && npm ci
 
-      - name: Build and Prepare Database
+      - name: Prepare Database and Build
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/rms_test
         run: |
@@ -55,14 +55,17 @@ jobs:
           PORT: 3001
         run: |
           cd backend
+          # รันด้วยโหมด production และส่งไปรัน background
           npm start &
 
-      - name: Wait for API
-        run: npx wait-on http://localhost:3001 --timeout 60000
+      - name: Wait for API to be ready
+        # รอจนกว่า Server จะตอบรับที่ Port 3001
+        run: npx wait-on http://localhost:3001 --timeout 120000
 
       - name: Run Newman API Tests
         run: |
           npm install -g newman
+          # ใช้ path ไฟล์ที่อยู่ชั้นนอกสุด
           newman run tests/postman/RMS-68030298-TestSuite-v2.json \
           -e tests/postman/env-ci.json \
           --reporters cli
