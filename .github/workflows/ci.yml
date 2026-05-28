@@ -17,8 +17,6 @@ jobs:
           POSTGRES_DB: rms_test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-        ports:
-          - 5432:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -26,46 +24,35 @@ jobs:
           --health-retries 5
 
     steps:
-      - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: 'npm'
-          cache-dependency-path: 'backend/package-lock.json'
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: 'npm'
+        cache-dependency-path: 'backend/package-lock.json'
 
-      - name: Install Dependencies
-        run: |
-          cd backend && npm ci
-          cd ../frontend && npm ci
+    - name: Install backend dependencies
+      run: cd backend && npm ci
 
-      - name: Prepare Database and Build
-        env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/rms_test
-        run: |
-          cd backend
-          npx prisma generate
-          npx prisma db push
-          npm run build
+    - name: Generate Prisma client
+      run: cd backend && npx prisma generate
 
-      - name: Start Backend Server
-        env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/rms_test
-          PORT: 3001
-        run: |
-          cd backend
-          # รันด้วยโหมด production และส่งไปรัน background
-          npm start &
+    - name: Run backend tests
+      run: cd backend && npm test
+      env:
+        DATABASE_URL: postgresql://postgres:postgres@localhost:5432/rms_test
 
-      - name: Wait for API to be ready
-        # รอจนกว่า Server จะตอบรับที่ Port 3001
-        run: npx wait-on http://localhost:3001 --timeout 120000
+    - name: Setup Node.js for frontend
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: 'npm'
+        cache-dependency-path: 'frontend/package-lock.json'
 
-      - name: Run Newman API Tests
-        run: |
-          npm install -g newman
-          # ใช้ path ไฟล์ที่อยู่ชั้นนอกสุด
-          newman run tests/postman/RMS-68030298-TestSuite-v2.json \
-          -e tests/postman/env-ci.json \
-          --reporters cli
+    - name: Install frontend dependencies
+      run: cd frontend && npm ci
+
+    - name: Run frontend build
+      run: cd frontend && npm run build

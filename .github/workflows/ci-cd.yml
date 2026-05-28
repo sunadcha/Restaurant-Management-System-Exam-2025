@@ -1,0 +1,69 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+
+    # สร้างฐานข้อมูล Postgres จำลองให้ Backend ใช้
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: rms_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: './backend/package-lock.json'
+
+      - name: Install Dependencies
+        run: |
+          cd backend && npm ci
+
+      - name: Build and Prepare Database
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/rms_test
+        run: |
+          cd backend
+          npx prisma generate
+          npx prisma db push
+          npm run build
+
+      - name: Start Backend Server
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/rms_test
+          PORT: 3001
+        run: |
+          cd backend
+          npm start &
+
+      - name: Wait for API
+        run: npx wait-on http://localhost:3001 --timeout 60000
+
+      - name: Run Newman API Tests
+        run: |
+          npm install -g newman
+          # เช็คชื่อไฟล์ .json ในเครื่องคุณอีกทีนะว่าชื่อนี้เป๊ะมั้ย
+          newman run tests/postman/RMS-68030298-TestSuite-v2.json \
+          -e tests/postman/env-ci.json \
+          --reporters cli
